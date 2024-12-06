@@ -11,6 +11,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := false
 
+# Disable Stuff
+TARGET_DISABLE_EPPE := true
+
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
@@ -126,12 +129,8 @@ PRODUCT_PACKAGES += \
 
 # fastbootd
 PRODUCT_PACKAGES += \
-    fastbootd
-
-PRODUCT_COPY_FILES += \
-    $(COMMON_RECOVERY_TS_FW_PATH)/novatek_ts_fw.bin:recovery/root/vendor/firmware/novatek_ts_fw.bin \
-    $(COMMON_RECOVERY_TS_FW_PATH)/novatek_ts_mp.bin:recovery/root/vendor/firmware/novatek_ts_mp.bin \
-    $(COMMON_RECOVERY_TS_FW_PATH)/focaltech_ts_fw_xinli.bin:recovery/root/vendor/firmware/focaltech_ts_fw_xinli.bin
+    fastbootd \
+    android.hardware.fastboot@1.0-impl-mock
 
 # FM Radio
 PRODUCT_PACKAGES += \
@@ -364,10 +363,13 @@ PRODUCT_PACKAGES += \
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
+    $(LOCAL_PATH) \
+    hardware/lineage/interfaces/power-libperfmgr \
     hardware/google/interfaces \
     hardware/google/pixel \
     hardware/mediatek \
-    $(LOCAL_PATH)
+    hardware/mediatek/libmtkperf_client \
+    hardware/xiaomi
 
 # Thermal
 PRODUCT_PACKAGES += \
@@ -382,9 +384,9 @@ PRODUCT_PACKAGES += \
 
 # Wi-Fi
 PRODUCT_PACKAGES += \
-    android.hardware.wifi.supplicant@1.0.vendor \
-    android.hardware.wifi.supplicant@1.1.vendor \
-    android.hardware.wifi.supplicant@1.2.vendor \
+    android.hardware.wifi.supplicant@2.0.vendor \
+    android.hardware.wifi.supplicant@2.1.vendor \
+    android.hardware.wifi.supplicant@2.2.vendor \
     android.hardware.wifi.supplicant@1.3.vendor \
     android.hardware.wifi.hostapd@1.0.vendor \
     android.hardware.wifi.hostapd@1.1.vendor \
