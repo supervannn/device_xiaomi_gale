@@ -1,3 +1,7 @@
+# Declaration For MTK hal sensors
+type mtk_hal_sensors, domain;
+typeattribute mtk_hal_sensors halclientdomain;
+
 # Allow access to the HALs
 hal_client_domain(mtk_hal_sensors, hal_audio)
 
