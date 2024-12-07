@@ -1,17 +1,18 @@
-# Firmware files
-type vendor_firmware_file, vendor_file_type, file_type;
-
-# Fingerprint
-type vendor_fingerprint_data_file, core_data_file_type, data_file_type, file_type;
-
-# Camera
-type persist_camera_data_file, data_file_type, file_type;
+# Latency
+type latency_device, dev_type;
 
 # Performance
-type proc_vm_dirty, fs_type, proc_type;
+type sysfs_mtk_cpufreq, fs_type, sysfs_type;
+type sysfs_mtk_gpufreq, fs_type, sysfs_type;
 
-# per boot files
-type per_boot_file, file_type, data_file_type, core_data_file_type;
+# PPS
+type pps_socket, file_type;
 
-# eMMC
-type vendor_sysfs_mmc_host, fs_type, sysfs_type;
+# Camera
+type vendor_camera_data_file, data_file_type, file_type;
+type camera_persist_file, file_type;
+
+# Fingerprint
+type vendor_fingerprint_data_file, data_file_type, file_type;
+type silead_fpd_data_file, data_file_type, file_type;
+type sysfs_fingerprint, fs_type, sysfs_type;
