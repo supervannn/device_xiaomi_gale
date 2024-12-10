@@ -11,9 +11,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := false
 
-# Disable Stuff
-TARGET_DISABLE_EPPE := true
-
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
@@ -24,8 +21,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 
 PRODUCT_PACKAGES += \
-    com.android.hardware.boot \
-    android.hardware.boot-service.default_recovery
+    android.hardware.boot@1.2-mtkimpl
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -90,9 +86,8 @@ PRODUCT_COPY_FILES += \
 # Fingerprint
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.3-service.xiaomi \
-    vendor.xiaomi.hardware.fx.tunnel@1.0.vendor \
     vendor.xiaomi.hardware.fingerprintextension@1.0.vendor \
-    libvendor.goodix.hardware.biometrics.fingerprint@2.1.vendor
+    vendor.goodix.hardware.biometrics.fingerprint@2.1.vendor
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/keylayout/uinput-chipone.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-chipone.kl \
@@ -123,7 +118,8 @@ PRODUCT_PACKAGES += \
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.4.vendor \
-    libprotobuf-cpp-lite-3.9.1-vendorcompat
+    libmockdrmcryptoplugin \
+    libdrm.vendor
 
 PRODUCT_PACKAGES += \
     android.hardware.drm-service.clearkey
@@ -227,16 +223,14 @@ PRODUCT_PACKAGES += \
     libcodec2_hidl@1.2.vendor \
     libavservices_minijail.vendor \
     libsfplugin_ccodec_utils.vendor \
-    libcodec2_soft_common.vendor \
-    libstagefright_foundation-v33
+    libcodec2_soft_common.vendor 
 
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/media,$(TARGET_COPY_OUT_VENDOR)/etc)
 
 # USB
 PRODUCT_PACKAGES += \
-    android.hardware.usb-service.mediatek \
-    android.hardware.usb.gadget-service.mediatek
+    android.hardware.usb@1.1-service.mt6768
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
@@ -248,16 +242,16 @@ PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
     $(LOCAL_PATH)/overlay-lineage
 
 PRODUCT_PACKAGES += \
-    CarrierConfigOverlayGale \
+    SettingsResOverlayGale \
     FrameworksResOverlayGale \
-    SettingsOverlayGale \
+    TetheringResOverlayGale \
     TelephonyOverlayGale \
-    TetheringConfigOverlayGale \
-    WifiOverlayGale
+    SystemUIOverlayGale \
+    WifiResOverlayGale
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power-service.lineage-libperfmgr \
+    android.hardware.power-service.mediatek-libperfmgr \
     android.hardware.power@1.3.vendor
 
 PRODUCT_COPY_FILES += \
@@ -338,7 +332,6 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES += \
     libui_shim \
-    libshim_sink
 
 # Rootdir
 PRODUCT_PACKAGES += \
@@ -358,27 +351,17 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.recovery.mt6768.rc
 
-# Overlays
-PRODUCT_PACKAGES += \
-    SettingsResOverlayGale \
-    FrameworksResOverlayGale \
-    TetheringResOverlayGale \
-    TelephonyOverlayGale \
-    SystemUIOverlayGale \
-    WifiResOverlayGale
-
 # Secure Element
 PRODUCT_PACKAGES += \
     android.hardware.secure_element@1.2.vendor
 
 # Sensors
 PRODUCT_PACKAGES += \
-    libshim_sensors \
     libsensorndkbridge \
     android.hardware.sensors@1.0.vendor \
     android.hardware.sensors@2.1.vendor \
     android.frameworks.sensorservice@1.0.vendor \
-    android.hardware.sensors-service.xiaomi-multihal
+    android.hardware.sensors@2.1-service.xiaomi-multihal
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
@@ -398,7 +381,9 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # Thermal
 PRODUCT_PACKAGES += \
-    android.hardware.thermal-service.mediatek
+    android.hardware.thermal@1.0.vendor \
+    android.hardware.thermal@2.0.vendor \
+    android.hardware.thermal@1.0-impl
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/thermal_info_config.json:$(TARGET_COPY_OUT_VENDOR)/etc/thermal_info_config.json
@@ -411,8 +396,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     wpa_supplicant \
     hostapd \
-    libwifi-hal-wrapper \
-    android.hardware.wifi-service
+    libwifi-hal-mtk
 
 PRODUCT_PACKAGES += \
     android.hardware.tetheroffload.config@1.0.vendor \
